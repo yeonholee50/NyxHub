@@ -1,6 +1,6 @@
-# Nyx
+# Nyxhub
 
-Nyx is a distributed file-sharing application designed to provide secure, fast, and decentralized file transfers. With the name taken as an inspiration from Greek mythology, Nyx operates seamlessly, ensuring that your data flows effortlessly across a global network.
+NyxHub is a distributed file-sharing application designed to provide secure, fast, and decentralized file transfers. With the name taken as an inspiration from Greek mythology, NyxHub operates seamlessly, ensuring that your data flows effortlessly across a global network.
 
 ## Features
 - **Decentralized Architecture:** Leverages peer-to-peer networking to ensure no single point of failure.
@@ -20,11 +20,11 @@ Nyx is a distributed file-sharing application designed to provide secure, fast, 
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/nyx.git
+   git clone https://github.com/yeonholee50/NyxHub.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd nyx
+   cd NyxHub
    ```
 3. Install dependencies:
    ```bash
@@ -36,13 +36,13 @@ Nyx is a distributed file-sharing application designed to provide secure, fast, 
    ```
 
 ## Usage
-1. Launch Nyx and create an account.
+1. Launch NyxHub and create an account.
 2. Share your unique user ID with peers to connect.
 3. Drag and drop files into the app to start sharing.
 4. Monitor transfer progress and manage connections via the dashboard.
 
 ## Architecture
-Nyx uses a peer-to-peer (P2P) architecture to facilitate direct file transfers between users. The system incorporates:
+NyxHub uses a peer-to-peer (P2P) architecture to facilitate direct file transfers between users. The system incorporates:
 - **WebRTC** for real-time communication.
 - **DHT (Distributed Hash Table):** Enables efficient peer discovery.
 - **AES-256 Encryption:** Ensures secure data exchanges.
@@ -65,7 +65,7 @@ We welcome contributions! To contribute:
 5. Open a pull request.
 
 ## License
-Nyx is licensed under the [MIT License](LICENSE).
+NyxHub is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgments
 - Special thanks to open-source libraries and contributors that made this project possible.
