@@ -1,0 +1,44 @@
+.signup-container {
+    text-align: center;
+    padding: 50px;
+    background-color: #E6ECF0;
+    color: #14171A;
+    min-height: 100vh;
+}
+
+.signup-container h1 {
+    color: #1DA1F2;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.signup-container input {
+    width: 300px;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.signup-container button {
+    background: linear-gradient(90deg, #1DA1F2, #0A95DD);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.signup-container button:hover {
+    background: linear-gradient(90deg, #0A95DD, #1DA1F2);
+    transition: 0.3s;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #17BF63; /* Success green for successful signup */
+}

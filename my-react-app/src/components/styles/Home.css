@@ -1,0 +1,53 @@
+.home-container {
+    text-align: center;
+    padding: 50px;
+    color: #657786;
+    background-color: #E6ECF0;
+    font-family: Arial, sans-serif;
+    margin-top: 50px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin-top: 20px;
+    font-size: 36px;
+    color: #1DA1F2;
+  }
+
+.home-container h1 {
+    color: #1DA1F2;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.home-container p {
+    font-size: 18px;
+    color: #657786;
+    margin-bottom: 30px;
+}
+
+.home-container button {
+    background: linear-gradient(90deg, #1DA1F2, #0A95DD);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.home-container button:hover {
+    background: linear-gradient(90deg, #0A95DD, #1DA1F2);
+    transition: 0.3s;
+}
+
+.twitter-logo {
+    width: 80px; /* Adjust the size of the logo */
+    height: auto;
+    margin-bottom: 20px;
+  }
