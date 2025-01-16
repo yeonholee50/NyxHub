@@ -1,6 +1,6 @@
 # Nyx
 
-Nyx is a distributed file-sharing application designed to provide secure, fast, and decentralized file transfers. Inspired by the Greek goddess of the night, Nyx operates seamlessly, ensuring that your data flows effortlessly across a global network.
+Nyx is a distributed file-sharing application designed to provide secure, fast, and decentralized file transfers. With the name taken as an inspiration from Greek mythology, Nyx operates seamlessly, ensuring that your data flows effortlessly across a global network.
 
 ## Features
 - **Decentralized Architecture:** Leverages peer-to-peer networking to ensure no single point of failure.
