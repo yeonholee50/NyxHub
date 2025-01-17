@@ -1,13 +1,13 @@
 .signup-container {
     text-align: center;
-    padding: 50px;
-    background-color: #E6ECF0;
-    color: #14171A;
+    padding-top: 10%;
+    background-color: #191f22;
+    color: #eeeeee;
     min-height: 100vh;
 }
 
 .signup-container h1 {
-    color: #1DA1F2;
+    color: #FFFFFF;
     font-size: 36px;
     margin-bottom: 20px;
 }
@@ -19,11 +19,13 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    background-color: #333333;
+    color: #FFFFFF;
 }
 
 .signup-container button {
-    background: linear-gradient(90deg, #1DA1F2, #0A95DD);
-    color: white;
+    background: #FFFFFF;
+    color: #000000;
     border: none;
     padding: 10px 20px;
     margin-top: 20px;
@@ -33,7 +35,7 @@
 }
 
 .signup-container button:hover {
-    background: linear-gradient(90deg, #0A95DD, #1DA1F2);
+    background: #AAAAAA;
     transition: 0.3s;
 }
 
@@ -41,4 +43,14 @@
     margin-top: 20px;
     font-size: 16px;
     color: #17BF63; /* Success green for successful signup */
+}
+
+.login-link {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
 }

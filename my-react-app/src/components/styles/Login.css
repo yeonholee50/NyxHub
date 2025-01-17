@@ -1,8 +1,8 @@
 .login-container {
     text-align: center;
-    padding: 50px;
-    background-color: #E6ECF0;
-    color: #14171A;
+    padding-top: 10%;
+    background-color: #191f22;
+    color: #eeeeee;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -11,7 +11,7 @@
 }
 
 .login-container h1 {
-    color: #1DA1F2;
+    color: #FFFFFF;
     font-size: 36px;
     margin-bottom: 20px;
 }
@@ -23,11 +23,13 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    background-color: #333333;
+    color: #FFFFFF;
 }
 
 .login-container button {
-    background: linear-gradient(90deg, #1DA1F2, #0A95DD);
-    color: white;
+    background: #FFFFFF;
+    color: #000000;
     border: none;
     padding: 10px 20px;
     margin-top: 20px;
@@ -37,7 +39,7 @@
 }
 
 .login-container button:hover {
-    background: linear-gradient(90deg, #0A95DD, #1DA1F2);
+    background: #AAAAAA;
     transition: 0.3s;
 }
 
@@ -50,11 +52,11 @@
 p {
     margin-top: 20px;
     font-size: 14px;
-    color: #657786;
+    color: #AAAAAA;
 }
 
 .signup-link {
-    color: #1DA1F2;
+    color: #FFFFFF;
     font-weight: bold;
     text-decoration: none;
 }

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles/Signup.css";
-import "./styles/Profile.css";
 import { Link, useNavigate } from "react-router-dom";
 
-const global_link = "https://design-twitter.onrender.com/";
+const global_link = "https://nyxhub.onrender.com/";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -15,14 +14,10 @@ const Signup = () => {
     document.title = "Signup - LeetCodeTwitter";
   }, []);
 
-
   const handleSignup = async () => {
-    
     try {
       const response = await axios.post(`${global_link}signup`, { username, password });
       setMessage(response.data.message);
-      
-      
     } catch (error) {
       console.error("Error during signup:", error); // Add this line for debugging
       setMessage(error.response?.data?.detail || "Signup failed");

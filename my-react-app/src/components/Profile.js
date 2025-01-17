@@ -4,7 +4,7 @@ import axios from "axios";
 import "./styles/Profile.css";
 
 // Define the base URL as a constant
-const global_link = "https://design-twitter.onrender.com/";
+const global_link = "https://nyxhub.onrender.com/";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);

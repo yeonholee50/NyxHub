@@ -1,38 +1,44 @@
 .home-container {
     text-align: center;
-    padding: 50px;
-    color: #657786;
-    background-color: #E6ECF0;
+    padding-top: 50px;
+    color: #eeeeee;
+    background-color: #191f22;
     font-family: Arial, sans-serif;
-    margin-top: 50px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+.description {
+    font-size: 18px;
+    color: #AAAAAA;
+    margin: 20px 0;
+    text-align: center;
+    max-width: 600px;
+}
 
 h1 {
     margin-top: 20px;
     font-size: 36px;
-    color: #1DA1F2;
-  }
+    color: #FFFFFF;
+}
 
 .home-container h1 {
-    color: #1DA1F2;
+    color: #FFFFFF;
     font-size: 36px;
     margin-bottom: 20px;
 }
 
 .home-container p {
     font-size: 18px;
-    color: #657786;
+    color: #AAAAAA;
     margin-bottom: 30px;
 }
 
 .home-container button {
-    background: linear-gradient(90deg, #1DA1F2, #0A95DD);
-    color: white;
+    background: #FFFFFF;
+    color: #000000;
     border: none;
     padding: 10px 20px;
     margin: 10px;
@@ -42,7 +48,7 @@ h1 {
 }
 
 .home-container button:hover {
-    background: linear-gradient(90deg, #0A95DD, #1DA1F2);
+    background: #AAAAAA;
     transition: 0.3s;
 }
 
@@ -50,4 +56,4 @@ h1 {
     width: 80px; /* Adjust the size of the logo */
     height: auto;
     margin-bottom: 20px;
-  }
+}

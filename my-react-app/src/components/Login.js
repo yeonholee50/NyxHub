@@ -12,9 +12,8 @@ const Login = () => {
     document.title = "Login - LeetCodeTwitter";
   }, []);
   const handleLogin = async () => {
-    
     try {
-      const response = await axios.post("https://design-twitter.onrender.com/login", { username, password });
+      const response = await axios.post("https://nyxhub.onrender.com/login", { username, password });
       setMessage(response.data.message);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("username", username);  // Store username in localStorage
