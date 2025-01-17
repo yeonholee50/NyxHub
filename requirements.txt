@@ -1,0 +1,9 @@
+fastapi # Ensure you are using the latest version compatible with your setup
+email_validator
+pydantic
+uvicorn
+pymongo
+bcrypt
+python-dotenv
+pyjwt
+motor
