@@ -150,12 +150,13 @@ async def login(credentials: LoginModel):
     return {"message": "Login successful", "token": token}
 
 @app.route('/profile', methods=['GET'])
-async def profile():
-    token = request.headers.get('token')
-    if not token or token not in users:
-        return jsonify({"detail": "Unauthorized"}), 401
-    user = users[token]
-    return jsonify({"username": token}), 200
+async def profile(token: str = Header(None)):
+    payload = verify_jwt(token)
+    user_id = payload.get("user_id")
+    user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    return user
 
 @app.route('/send_file', methods=['POST'])
 async def send_file(
