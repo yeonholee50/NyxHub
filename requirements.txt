@@ -7,3 +7,5 @@ bcrypt
 python-dotenv
 pyjwt
 motor
+flask
+flask_cors
