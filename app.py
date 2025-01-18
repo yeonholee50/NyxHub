@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Header
+from fastapi import FastAPI, HTTPException, Header, Depends, File, UploadFile, Form
 from pydantic import BaseModel, Field
 from bson import ObjectId
 import bcrypt
@@ -14,6 +14,8 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
+from fastapi.responses import FileResponse
+import shutil
 
 app = Flask(__name__)
 CORS(app)
@@ -59,6 +61,7 @@ app.add_middleware(
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
 db = client.get_database("nyx")
 users_collection = db.get_collection("users")
+files_collection = db.get_collection("files")
 
 # Helper Functions
 def hash_password(password: str) -> str:
@@ -118,6 +121,11 @@ class LoginModel(BaseModel):
 class UserModel(BaseModel):
     username: str
     hashed_password: str
+class FileModel(BaseModel):
+    filename: str
+    filepath: str
+    sender_id: str
+    recipient_id: str
 
 # Endpoints
 @app.post("/signup")
@@ -142,7 +150,7 @@ async def login(credentials: LoginModel):
     return {"message": "Login successful", "token": token}
 
 @app.route('/profile', methods=['GET'])
-def profile():
+async def profile():
     token = request.headers.get('token')
     if not token or token not in users:
         return jsonify({"detail": "Unauthorized"}), 401
@@ -150,33 +158,33 @@ def profile():
     return jsonify({"username": token}), 200
 
 @app.route('/send_file', methods=['POST'])
-def send_file():
-    token = request.headers.get('token')
-    if not token or token not in users:
-        return jsonify({"detail": "Unauthorized"}), 401
+async def send_file(
+    token: str = Header(...), 
+    recipient_username: str = Form(...), 
+    file: UploadFile = File(...)
+):
+    payload = verify_jwt(token)
+    sender_id = payload["user_id"]
 
-    recipient_username = request.form.get('recipient_username')
-    if recipient_username not in users:
-        return jsonify({"detail": "Recipient user not found"}), 400
+    recipient = await users_collection.find_one({"username": recipient_username})
+    if not recipient:
+        raise HTTPException(status_code=400, detail="Recipient user not found")
 
-    if 'file' not in request.files:
-        return jsonify({"detail": "No file part"}), 400
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"detail": "No selected file"}), 400
+    file_data = {
+        "filename": filename,
+        "filepath": file_path,
+        "sender_id": sender_id,
+        "recipient_id": str(recipient["_id"])
+    }
+    await files_collection.insert_one(file_data)
 
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        users[recipient_username]["files"].append({
-            "filename": filename,
-            "filepath": file_path
-        })
-        return jsonify({"message": "File sent successfully!"}), 200
-
-    return jsonify({"detail": "File not allowed"}), 400
+    return {"message": "File sent successfully!"}
 
 @app.route('/received_files', methods=['GET'])
 def received_files():
