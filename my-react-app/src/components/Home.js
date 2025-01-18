@@ -14,7 +14,7 @@ const Home = () => {
         <link rel="icon" href="./nyxhublogo.png" type="image/png" size="16x16"/>
         <title>NyxHub</title>
       </Helmet>
-      <img src={nyxhublogo} alt="NyxHub Logo" className="twitter-logo" />
+      <img src={nyxhublogo} alt="NyxHub Logo" className="nyxhublogo" />
       <h1>Welcome to NyxHub: The Peer-to-Peer File Transfer App</h1>
       <p className="description">
         NyxHub allows peers to send files anonymously through the internet. Enjoy scrambled and secure peer-to-peer file sharing on this platform. Your data is protected and your identity remains confidential.

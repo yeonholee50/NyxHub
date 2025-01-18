@@ -10,7 +10,24 @@ import dotenv
 from fastapi.middleware.cors import CORSMiddleware
 import motor.motor_asyncio
 import logging
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
+import os
+from werkzeug.utils import secure_filename
 
+app = Flask(__name__)
+CORS(app)
+
+UPLOAD_FOLDER = 'uploads/'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+users = {}
+files = {}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -124,14 +141,60 @@ async def login(credentials: LoginModel):
     token = create_jwt(str(user["_id"]))
     return {"message": "Login successful", "token": token}
 
-@app.get("/profile", response_model=UserOutModel)
-async def get_profile(token: str = Header(None)):
-    payload = verify_jwt(token)
-    user_id = payload.get("user_id")
-    user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found.")
-    return user
+@app.route('/profile', methods=['GET'])
+def profile():
+    token = request.headers.get('token')
+    if not token or token not in users:
+        return jsonify({"detail": "Unauthorized"}), 401
+    user = users[token]
+    return jsonify({"username": token}), 200
+
+@app.route('/send_file', methods=['POST'])
+def send_file():
+    token = request.headers.get('token')
+    if not token or token not in users:
+        return jsonify({"detail": "Unauthorized"}), 401
+
+    recipient_username = request.form.get('recipient_username')
+    if recipient_username not in users:
+        return jsonify({"detail": "Recipient user not found"}), 400
+
+    if 'file' not in request.files:
+        return jsonify({"detail": "No file part"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"detail": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        users[recipient_username]["files"].append({
+            "filename": filename,
+            "filepath": file_path
+        })
+        return jsonify({"message": "File sent successfully!"}), 200
+
+    return jsonify({"detail": "File not allowed"}), 400
+
+@app.route('/received_files', methods=['GET'])
+def received_files():
+    token = request.headers.get('token')
+    if not token or token not in users:
+        return jsonify({"detail": "Unauthorized"}), 401
+
+    user_files = users[token]["files"]
+    return jsonify(user_files), 200
+
+@app.route('/download/<filename>', methods=['GET'])
+def download_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+if __name__ == '__main__':
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
+    app.run(debug=True)
 
 @app.get("/")
 async def root():

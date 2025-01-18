@@ -1,8 +1,8 @@
 .profile-container {
     text-align: center;
     padding: 50px;
-    background-color: #E6ECF0;
-    color: #14171A;
+    background-color: #191f22; /* Adjusted to match the background color */
+    color: #eeeeee; /* Adjusted to match the text color */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -11,7 +11,7 @@
 }
 
 .profile-container h1 {
-    color: #1DA1F2;
+    color: #FFFFFF; /* Adjusted to match the heading color */
     font-size: 36px;
     margin-bottom: 20px;
 }
@@ -23,11 +23,13 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    background-color: #333333; /* Adjusted to match the input background color */
+    color: #FFFFFF; /* Adjusted to match the input text color */
 }
 
 .profile-container button {
-    background: linear-gradient(90deg, #1DA1F2, #0A95DD);
-    color: white;
+    background: #FFFFFF; /* Adjusted to match the button background color */
+    color: #000000; /* Adjusted to match the button text color */
     border: none;
     padding: 10px 20px;
     margin-top: 20px;
@@ -37,7 +39,7 @@
 }
 
 .profile-container button:hover {
-    background: linear-gradient(90deg, #0A95DD, #1DA1F2);
+    background: #AAAAAA; /* Adjusted to match the button hover color */
     transition: 0.3s;
 }
 
@@ -47,46 +49,35 @@
     color: #E0245E; /* Error red for unsuccessful follow/unfollow */
 }
 
-.search-results {
+.file-send-section, .received-files-section {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.file-send-section h2, .received-files-section h2 {
+    color: #FFFFFF;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.received-files-section ul {
     list-style: none;
     padding: 0;
 }
 
-.search-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 300px;
-    margin: 10px auto;
+.received-files-section li {
+    margin: 10px 0;
     padding: 10px;
-    border: 1px solid #ccc;
+    background-color: #444444; /* Adjusted to match the item background color */
+    color: #FFFFFF; /* Adjusted to match the item text color */
     border-radius: 5px;
-    background-color: #fff;
 }
 
-.username {
-    font-size: 16px;
-    margin-right: 10px;
+.received-files-section li a {
+    color: #1DA1F2; /* Link color */
+    text-decoration: none;
 }
 
-.follow-button {
-    background-color: #1DA1F2;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.unfollow-button {
-    background-color: #E0245E;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.follow-button:hover, .unfollow-button:hover {
-    opacity: 0.8;
+.received-files-section li a:hover {
+    text-decoration: underline;
 }

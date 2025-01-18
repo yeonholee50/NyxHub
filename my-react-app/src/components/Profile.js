@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./styles/Profile.css";
+import "./styles/Profile.css";  // Imports Profile.css
 
-// Define the base URL as a constant
 const global_link = "https://nyxhub.onrender.com/";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
-  const [feed, setFeed] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
-  const [tweetContent, setTweetContent] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
+  const [recipientUsername, setRecipientUsername] = useState("");
+  const [file, setFile] = useState(null);
+  const [receivedFiles, setReceivedFiles] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
-    document.title = "Profile - LeetCodeTwitter";
-  }, [])
-  useEffect(() => {
-    
+    document.title = "Profile - NyxHub";
     const token = localStorage.getItem("token");
 
-    // If no token, redirect to login
     if (!token) {
       setMessage("Unauthorized. Please log in.");
       navigate("/login");
@@ -31,199 +26,81 @@ const Profile = () => {
     const fetchProfileData = async () => {
       try {
         const config = {
-          headers: {
-            token: token,
-          },
+          headers: { token: token },
         };
-
         const profileResponse = await axios.get(`${global_link}profile`, config);
-        const feedResponse = await axios.get(`${global_link}feed`, config);
+        const filesResponse = await axios.get(`${global_link}received_files`, config);
 
         setUserData(profileResponse.data);
-        setFeed(feedResponse.data);
+        setReceivedFiles(filesResponse.data);
       } catch (error) {
-        if (error.response?.status === 401) {
-          setMessage("Session expired. Please log in again.");
-          localStorage.removeItem("token");
-          navigate("/login");
-        } else {
-          setMessage(error.response?.data?.detail || "Failed to load profile or feed.");
-        }
+        setMessage(error.response?.data?.detail || "Failed to load profile or files.");
       }
     };
 
     fetchProfileData();
-
-    // Set up interval to refresh feed every 10 seconds
-    const intervalId = setInterval(fetchProfileData, 10000);
-
-    // Clean up interval on component unmount
-    return () => clearInterval(intervalId);
-
   }, [navigate]);
 
-  const handleSearch = async () => {
-    const token = localStorage.getItem("token");
-
-    try {
-      const config = {
-        headers: {
-          token: token,
-        },
-      };
-      const response = await axios.get(
-        `${global_link}search?prefix=${searchQuery}`,
-        config
-      );
-
-      setSearchResults(response.data);
-    } catch (error) {
-      setMessage(error.response?.data?.detail || "Search failed.");
+  const handleFileUpload = async () => {
+    if (!recipientUsername || !file) {
+      setMessage("Please enter a username and select a file.");
+      return;
     }
-  };
 
-  const handleTweet = async () => {
     const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("recipient_username", recipientUsername);
+    formData.append("file", file);
 
     try {
       const config = {
         headers: {
           token: token,
+          "Content-Type": "multipart/form-data",
         },
       };
 
-      const tweetData = {
-        content: tweetContent,
-      };
-
-      await axios.post(
-        `${global_link}tweet`,
-        tweetData,
-        config
-      );
-      setMessage("Tweet posted!");
-      setTweetContent(""); // Clear the tweet input
+      await axios.post(`${global_link}send_file`, formData, config);
+      setMessage("File sent successfully!");
+      setRecipientUsername("");
+      setFile(null);
     } catch (error) {
-      setMessage(error.response?.data?.detail || "Failed to post tweet.");
-    }
-  };
-
-  const handleFollow = async (targetUsername) => {
-    const token = localStorage.getItem("token");
-
-    try {
-      const config = {
-        headers: {
-          token: token,
-        },
-      };
-
-      await axios.post(
-        `${global_link}follow`,
-        { target_username: targetUsername },
-        config
-      );
-      setMessage(`Followed ${targetUsername}`);
-      // Update search results to reflect the follow status
-      const updatedResults = searchResults.map(user => 
-        user.username === targetUsername ? { ...user, is_following: true } : user
-      );
-      setSearchResults(updatedResults);
-    } catch (error) {
-      setMessage(error.response?.data?.detail || `Failed to follow ${targetUsername}`);
-    }
-  };
-
-  const handleUnfollow = async (targetUsername) => {
-    const token = localStorage.getItem("token");
-
-    try {
-      const config = {
-        headers: {
-          token: token,
-        },
-      };
-
-      await axios.post(
-        `${global_link}unfollow`,
-        { target_username: targetUsername },
-        config
-      );
-      setMessage(`Unfollowed ${targetUsername}`);
-      // Update search results to reflect the unfollow status
-      const updatedResults = searchResults.map(user => 
-        user.username === targetUsername ? { ...user, is_following: false } : user
-      );
-      setSearchResults(updatedResults);
-    } catch (error) {
-      setMessage(error.response?.data?.detail || `Failed to unfollow ${targetUsername}`);
+      setMessage(error.response?.data?.detail || "Failed to send file.");
     }
   };
 
   return (
     <div className="profile-container">
       <h1>Welcome, {userData?.username}</h1>
-      {message && <p className="error-message">{message}</p>}
+      {message && <p className="message">{message}</p>}
 
-      <div className="tweet-section">
-        <h2>Create a Tweet</h2>
-        <textarea
-          value={tweetContent}
-          onChange={(e) => setTweetContent(e.target.value)}
-          placeholder="What's on your mind?"
-        />
-        <button onClick={handleTweet}>Tweet</button>
-      </div>
-
-      <div className="search-section">
-        <h2>Search</h2>
+      <div className="file-send-section">
+        <h2>Send a File</h2>
         <input
           type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search by username"
+          placeholder="Recipient Username"
+          value={recipientUsername}
+          onChange={(e) => setRecipientUsername(e.target.value)}
         />
-        <button onClick={handleSearch}>Search</button>
-        {searchResults.length > 0 && (
-          <ul className="search-results">
-            {searchResults.map((user, index) => (
-              <li key={index} className="search-item">
-                <span className="username">{user.username}</span>
-                {user.is_following ? (
-                  <button
-                    className="unfollow-button"
-                    onClick={() => handleUnfollow(user.username)}
-                  >
-                    Unfollow
-                  </button>
-                ) : (
-                  <button
-                    className="follow-button"
-                    onClick={() => handleFollow(user.username)}
-                  >
-                    Follow
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+        <button onClick={handleFileUpload}>Send File</button>
       </div>
 
-      <div className="feed-section">
-        <h2>Your Feed</h2>
-        {feed.length > 0 ? (
+      <div className="received-files-section">
+        <h2>Received Files</h2>
+        {receivedFiles.length > 0 ? (
           <ul>
-            {feed.map((post, index) => (
+            {receivedFiles.map((file, index) => (
               <li key={index}>
-                <strong>{post.username}:</strong> {post.content}
-                <br />
-                <small>{new Date(post.timestamp).toLocaleString()}</small>
+                <a href={`${global_link}download/${file.id}`} download>{file.filename}</a>
               </li>
             ))}
           </ul>
         ) : (
-          <p>No posts to show.</p>
+          <p>No files received.</p>
         )}
       </div>
     </div>
