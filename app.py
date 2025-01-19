@@ -169,7 +169,7 @@ async def send_file(
     recipient_username: str = Form(...), 
     file: UploadFile = File(...)
 ):
-    await tokens_collection.insert_one({"user_id": str(user["_id"]), "received token": token})
+    await tokens_collection.insert_one({"user_id": str(payload["user_id"]), "received token": token})
     payload = verify_jwt(token)
     sender_id = payload["user_id"]
 
