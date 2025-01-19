@@ -153,7 +153,7 @@ async def login(credentials: LoginModel):
     logger.info(f"Generated token for user: {user['username']} with token: {token}")
     return {"message": "Login successful", "token": token}
 
-@app.route('/profile', methods=['GET'])
+@app.get('/profile')
 async def profile(token: str = Header(None)):
     logger.info(f"Received token: {token}")
     payload = verify_jwt(token)
@@ -164,9 +164,9 @@ async def profile(token: str = Header(None)):
     
     return user
 
-@app.route('/send_file', methods=['POST'])
+@app.post('/send_file')
 async def send_file(
-    token: str = Header(...), 
+    token: str = Header(None), 
     recipient_username: str = Form(...), 
     file: UploadFile = File(...)
 ):
@@ -198,7 +198,7 @@ async def send_file(
 
     return {"message": "File sent successfully!"}
 
-@app.route('/received_files', methods=['GET'])
+@app.get('/received_files')
 def received_files(token: str = Header(None)):
     try:
         payload = verify_jwt(token)
@@ -211,7 +211,7 @@ def received_files(token: str = Header(None)):
     user_files = users[user_id]["files"]
     return jsonify(user_files), 200
 
-@app.route('/download/<filename>', methods=['GET'])
+@app.get('/download/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 

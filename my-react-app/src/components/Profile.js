@@ -24,12 +24,12 @@ const Profile = () => {
     }
 
     const fetchProfileData = async () => {
+      
       try {
         const config = {
           headers: { 
             token: token,
-
-           },
+          },
         };
         const profileResponse = await axios.get(`${global_link}profile`, config);
         const filesResponse = await axios.get(`${global_link}received_files`, config);
@@ -38,6 +38,7 @@ const Profile = () => {
         setReceivedFiles(filesResponse.data);
       } catch (error) {
         setMessage(error.response?.data?.detail || "Failed to load profile or files.");
+        localStorage.removeItem("token");
       }
     };
 
