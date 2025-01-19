@@ -123,9 +123,7 @@ class LoginModel(BaseModel):
 
 
 
-class UserOutModel(BaseModel):
-    id: PyObjectId = Field(alias="_id")
-    username: str
+
     
 class FileModel(BaseModel):
     filename: str
