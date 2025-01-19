@@ -147,7 +147,7 @@ async def send_file(
     logger.info(f"Received token: {token}")
 
     payload = verify_jwt(token)
-    sender_id = payload["user_id"]
+    sender_id = payload["username"]
 
     recipient = await users_collection.find_one({"username": recipient_username})
     if not recipient:
@@ -160,7 +160,7 @@ async def send_file(
         "file_id": str(file_id),
         "filename": file.filename,
         "sender_id": sender_id,
-        "recipient_id": str(recipient["_id"])
+        "recipient_id": str(recipient["username"])
     }
     await files_collection.insert_one(file_data)
 
@@ -170,7 +170,7 @@ async def send_file(
 async def received_files(token: str = Header(None)):
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
-
+    logger.info(f"User received files: {user_id}")
     files = await files_collection.find({"recipient_id": user_id}).to_list(length=None)
     return files
 
