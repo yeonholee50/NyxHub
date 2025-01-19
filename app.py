@@ -200,7 +200,7 @@ async def received_files(token: str = Header(None)):
     files = await files_collection.find({"recipient_id": user_id}).to_list(length=100)
     return files
 
-@app.get('/download/{file_id}', response_model=StreamingResponse)
+@app.get('/download/{file_id}')
 async def download_file(file_id: str):
     file = fs.get(ObjectId(file_id))
     logger.info(f"Downloading file: {file.filename}")
