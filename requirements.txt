@@ -9,3 +9,4 @@ pyjwt
 motor
 flask
 flask_cors
+python-multipart
