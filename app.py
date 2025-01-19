@@ -114,6 +114,8 @@ class FileModel(BaseModel):
     sender_id: str
     recipient_id: str
 
+
+
 # Endpoints
 @app.post("/signup")
 async def signup(user: SignupModel):
@@ -170,7 +172,7 @@ async def send_file(
         "file_id": str(file_id),
         "filename": file.filename,
         "sender_id": sender_id,
-        "recipient_id": recipient_username
+        "recipient_id": recipient["_id"]
     }
     await files_collection.insert_one(file_data)
 
