@@ -188,12 +188,16 @@ async def send_file(
     return {"message": "File sent successfully!"}
 
 @app.route('/received_files', methods=['GET'])
-def received_files():
-    token = request.headers.get('token')
-    if not token or token not in users:
-        return jsonify({"detail": "Unauthorized"}), 401
+def received_files(token: str = Header(None)):
+    try:
+        payload = verify_jwt(token)
+    except Exception as e:
+        return jsonify({"error": "Invalid token"}), 401
+    user_id = payload.get("user_id")
+    if not user_id or user_id not in users:
+        return jsonify({"error": "User not found"}), 404
 
-    user_files = users[token]["files"]
+    user_files = users[user_id]["files"]
     return jsonify(user_files), 200
 
 @app.route('/download/<filename>', methods=['GET'])
