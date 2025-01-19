@@ -151,13 +151,12 @@ async def login(credentials: LoginModel):
         raise HTTPException(status_code=401, detail="Invalid username or password.")
     token = create_jwt(str(user["_id"]))
     logger.info(f"Generated token for user: {user['username']} with token: {token}")
-    return {"message": "Login successful", "token": token}
 
 @app.get('/profile')
 async def profile(token: str = Header(None)):
-    logger.info(f"Received token: {token}")
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
+    logger.info(f"User ID: {user_id}")
     user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
