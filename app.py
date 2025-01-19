@@ -132,6 +132,7 @@ async def login(credentials: LoginModel):
 async def profile(token: str = Header(None)):
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
+    logger.info(f"User received profile data: {user_id}")
     user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
@@ -147,7 +148,7 @@ async def send_file(
     logger.info(f"Received token: {token}")
 
     payload = verify_jwt(token)
-    sender_id = payload["username"]
+    sender_id = payload["user_id"]
 
     recipient = await users_collection.find_one({"username": recipient_username})
     if not recipient:
@@ -160,7 +161,7 @@ async def send_file(
         "file_id": str(file_id),
         "filename": file.filename,
         "sender_id": sender_id,
-        "recipient_id": recipient_username
+        "recipient_id": recipient
     }
     await files_collection.insert_one(file_data)
 
