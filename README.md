@@ -1,23 +1,26 @@
-# Nyxhub
+# 🌌 NyxHub
 
-NyxHub is a distributed file-sharing application designed to provide secure, fast, and decentralized file transfers. With the name taken as an inspiration from Greek mythology, NyxHub operates seamlessly, ensuring that your data flows effortlessly across a global network.
+NyxHub is a centralized file-sharing application designed to provide secure, fast, and decentralized file transfers. With the name taken as an inspiration from Greek mythology, NyxHub operates seamlessly, ensuring that your data flows effortlessly across a global network.
 
-## Features
-- **Decentralized Architecture:** Leverages peer-to-peer networking to ensure no single point of failure.
-- **Secure Transfers:** Implements end-to-end encryption for all file exchanges.
-- **Cross-Platform Support:** Compatible with Windows, macOS, and Linux.
-- **Efficient Sharing:** Optimized algorithms for fast and reliable data transfer.
-- **User-Friendly Interface:** Simple and intuitive design for all user levels.
-- **Destination-Based Sharing:** Allows users to send files directly to a specific user by username, which are securely stored in a database for retrieval.
-- **Custom Encryption & Scrambling:** Data encryption and scrambling implemented in C/C++ for enhanced performance and security.
+## ✨ Features
+✅ means already supported
+🚧 means currently under implementation
 
-## Installation
+- **🔗 Centralized Sharing Architecture:** Leverages file sharing via database. ✅ 
+- **🔒 Secure Transfers:** Implements end-to-end encryption for all file exchanges. ✅
+- **💻 Cross-Platform Support:** Compatible with Windows, macOS, and Linux. ✅
+- **🚀 Efficient Sharing:** Optimized algorithms for fast and reliable data transfer.
+- **🖱️ User-Friendly Interface:** Simple and intuitive design for all user levels. ✅
+- **📤 Destination-Based Sharing:** Allows users to send files directly to a specific user by username, which are securely stored in a database for retrieval. ✅
+- **🛡️Custom Encryption & Scrambling:** Data encryption and scrambling implemented in C/C++ for enhanced performance and security. 🚧
 
-### Prerequisites
+## ⚙️ Installation
+
+### 📋 Prerequisites
 - **Node.js** (v16.0 or higher)
 - **npm** (v7.0 or higher)
 
-### Steps
+### 🛠️ Steps
 1. Clone the repository:
    ```bash
    git clone https://github.com/yeonholee50/NyxHub.git
@@ -35,19 +38,16 @@ NyxHub is a distributed file-sharing application designed to provide secure, fas
    npm start
    ```
 
-## Usage
+## 📚 Usage
 1. Launch NyxHub and create an account.
-2. Share your unique user ID with peers to connect.
-3. Drag and drop files into the app to start sharing.
-4. Monitor transfer progress and manage connections via the dashboard.
+2. Share your unique username with peers to connect.
+3. Upload files along with a designated recipient username into the app to start sharing.
+4. 📊 Monitor transfer progress and received files via the dashboard.
 
 ## Architecture
-NyxHub uses a peer-to-peer (P2P) architecture to facilitate direct file transfers between users. The system incorporates:
-- **WebRTC** for real-time communication.
-- **DHT (Distributed Hash Table):** Enables efficient peer discovery.
-- **AES-256 Encryption:** Ensures secure data exchanges.
+NyxHub uses a centralized architecture to facilitate indirect but secure file transfers between users. 
 
-## Contribution
+## 🤝 Contribution
 We welcome contributions! To contribute:
 1. Fork the repository.
 2. Create a new branch:
@@ -62,13 +62,13 @@ We welcome contributions! To contribute:
    ```bash
    git push origin feature/your-feature-name
    ```
-5. Open a pull request.
+5. Open a pull request. 🚀
 
-## License
+## 📜 License
 NyxHub is licensed under the [MIT License](LICENSE).
 
-## Acknowledgments
+## 🙏 Acknowledgments
 - Special thanks to open-source libraries and contributors that made this project possible.
 
-## Contact
+## 📞 Contact
 For questions, feedback, or support, please contact us at [yeonholee50@gmail.com].
