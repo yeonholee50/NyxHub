@@ -123,9 +123,10 @@ class LoginModel(BaseModel):
 
 
 
-class UserModel(BaseModel):
+class UserOutModel(BaseModel):
+    id: PyObjectId = Field(alias="_id")
     username: str
-    hashed_password: str
+    
 class FileModel(BaseModel):
     filename: str
     filepath: str
