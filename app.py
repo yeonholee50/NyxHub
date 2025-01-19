@@ -121,6 +121,8 @@ class LoginModel(BaseModel):
     username: str
     password: str
 
+
+
 class UserModel(BaseModel):
     username: str
     hashed_password: str
@@ -153,7 +155,7 @@ async def login(credentials: LoginModel):
     logger.info(f"Generated token for user: {user['username']} with token: {token}")
     return {"message": "Login successful", "token": token}
 
-@app.get('/profile')
+@app.get('/profile', response_model= UserModel)
 async def profile(token: str = Header(None)):
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
