@@ -160,7 +160,7 @@ async def send_file(
         "file_id": str(file_id),
         "filename": file.filename,
         "sender_id": sender_id,
-        "recipient_id": str(recipient["username"])
+        "recipient_id": recipient_username
     }
     await files_collection.insert_one(file_data)
 
