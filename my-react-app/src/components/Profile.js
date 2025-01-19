@@ -33,10 +33,11 @@ const Profile = () => {
         };
         const profileResponse = await axios.get(`${global_link}profile`, config);
         const filesResponse = await axios.get(`${global_link}received_files`, config);
-        console.log(filesResponse.data);
+        
 
         setUserData(profileResponse.data);
         setReceivedFiles(filesResponse.data);
+        console.log(filesResponse.data);
       } catch (error) {
         setMessage(error.response?.data?.detail || "Failed to load profile or files.");
         localStorage.removeItem("token");

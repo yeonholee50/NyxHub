@@ -119,7 +119,7 @@ class ReceivedFileModel(BaseModel):
     filename: str
     sender_id: str
     recipient_id: str
-
+    file_id: str
     class Config:
         json_encoders = {ObjectId: str}
 
