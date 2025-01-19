@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Header, Depends, File, UploadFile, Form
+from fastapi.logger import logger
 from pydantic import BaseModel, Field
 from bson import ObjectId
 import bcrypt
@@ -149,12 +150,12 @@ async def login(credentials: LoginModel):
     if not user or not verify_password(credentials.password, user["hashed_password"]):
         raise HTTPException(status_code=401, detail="Invalid username or password.")
     token = create_jwt(str(user["_id"]))
-    app.logger.info(f"Generated token for user: {user['username']} with token: {token}")
+    logger.info(f"Generated token for user: {user['username']} with token: {token}")
     return {"message": "Login successful", "token": token}
 
 @app.route('/profile', methods=['GET'])
 async def profile(token: str = Header(None)):
-    app.logger.info(f"Received token: {token}")
+    logger.info(f"Received token: {token}")
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
     user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
@@ -169,7 +170,10 @@ async def send_file(
     recipient_username: str = Form(...), 
     file: UploadFile = File(...)
 ):
-    app.logger.info(f"Received token: {token}")
+    logger.info(f"Received token: {token}")
+    """
+    maybe type of token and generated token is different?
+    """
 
     payload = verify_jwt(token)
     sender_id = payload["user_id"]
