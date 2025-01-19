@@ -64,7 +64,6 @@ client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
 db = client.get_database("nyx")
 users_collection = db.get_collection("users")
 files_collection = db.get_collection("files")
-tokens_collection = db.get_collection("token")
 
 # Helper Functions
 def hash_password(password: str) -> str:
@@ -150,17 +149,18 @@ async def login(credentials: LoginModel):
     if not user or not verify_password(credentials.password, user["hashed_password"]):
         raise HTTPException(status_code=401, detail="Invalid username or password.")
     token = create_jwt(str(user["_id"]))
-    await tokens_collection.insert_one({"user_id": str(user["_id"]), "generated token": token})
+    app.logger.info(f"Generated token for user: {user['username']} with token: {token}")
     return {"message": "Login successful", "token": token}
 
 @app.route('/profile', methods=['GET'])
 async def profile(token: str = Header(None)):
-    await tokens_collection.insert_one({"user_id": str(user["_id"]), "received token": token})
+    app.logger.info(f"Received token: {token}")
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
     user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
+    
     return user
 
 @app.route('/send_file', methods=['POST'])
@@ -169,7 +169,8 @@ async def send_file(
     recipient_username: str = Form(...), 
     file: UploadFile = File(...)
 ):
-    await tokens_collection.insert_one({"user_id": str(payload["user_id"]), "received token": token})
+    app.logger.info(f"Received token: {token}")
+
     payload = verify_jwt(token)
     sender_id = payload["user_id"]
 
