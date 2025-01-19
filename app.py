@@ -16,6 +16,7 @@ import os
 from werkzeug.utils import secure_filename
 from fastapi.responses import FileResponse
 import shutil
+import logging
 
 app = Flask(__name__)
 CORS(app)
@@ -46,6 +47,7 @@ dotenv.load_dotenv()
 MONGO_URI = os.environ.get("MONGO_URI")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 ALGORITHM = os.environ.get("ALGORITHM")
+
 
 app = FastAPI()
 
@@ -147,10 +149,12 @@ async def login(credentials: LoginModel):
     if not user or not verify_password(credentials.password, user["hashed_password"]):
         raise HTTPException(status_code=401, detail="Invalid username or password.")
     token = create_jwt(str(user["_id"]))
+    logging.log(f"{token} generated for user")
     return {"message": "Login successful", "token": token}
 
 @app.route('/profile', methods=['GET'])
 async def profile(token: str = Header(None)):
+    logging.log(f"Token received: {token}")
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
     user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
