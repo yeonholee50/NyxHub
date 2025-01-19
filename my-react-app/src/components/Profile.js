@@ -26,7 +26,10 @@ const Profile = () => {
     const fetchProfileData = async () => {
       try {
         const config = {
-          headers: { token: token },
+          headers: { 
+            token: token,
+
+           },
         };
         const profileResponse = await axios.get(`${global_link}profile`, config);
         const filesResponse = await axios.get(`${global_link}received_files`, config);
