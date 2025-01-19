@@ -201,7 +201,8 @@ async def received_files(token: str = Header(None)):
 @app.get('/download/{file_id}', response_model=DownloadFileModel)
 async def download_file(file_id: str):
     file = fs.get(ObjectId(file_id))
-    return FileResponse(io.BytesIO(file.read()), filename=file.filename, media_type='application/octet-stream')
-
+    logger.info(f"Downloading file: {file.filename}")
+    response = FileResponse(io.BytesIO(file.read()), filename=file.filename, media_type='application/octet-stream')
+    return response
 if __name__ == '__main__':
     app.run(debug=True)
