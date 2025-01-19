@@ -203,6 +203,7 @@ async def download_file(file_id: str):
     file = fs.get(ObjectId(file_id))
     logger.info(f"Downloading file: {file.filename}")
     response = FileResponse(io.BytesIO(file.read()), filename=file.filename, media_type='application/octet-stream')
+    logger.info(f"File downloaded: {file.filename}")
     return response
 if __name__ == '__main__':
     app.run(debug=True)
