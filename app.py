@@ -172,7 +172,7 @@ async def received_files(token: str = Header(None)):
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
     logger.info(f"User received files: {user_id}")
-    files = await files_collection.find({"recipient_id": user_id}).to_list(length=None)
+    files = await files_collection.find({"recipient_id": user_id}).to_list(length=100)
     return files
 
 @app.get('/download/{file_id}')
