@@ -100,7 +100,8 @@ const Profile = () => {
           <ul>
             {receivedFiles.map((file, index) => (
               <li key={index}>
-                <a href={`${global_link}download/${file.id}`} download>{file.filename}</a>
+                
+                <a href={`${global_link}download/${file.file_id}`} download>{file.filename}</a>
               </li>
             ))}
           </ul>
