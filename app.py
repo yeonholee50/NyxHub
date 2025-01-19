@@ -156,7 +156,7 @@ async def login(credentials: LoginModel):
     logger.info(f"Generated token for user: {user['username']} with token: {token}")
     return {"message": "Login successful", "token": token}
 
-@app.get('/profile', response_model= UserModel)
+@app.get('/profile', response_model= UserOutModel)
 async def profile(token: str = Header(None)):
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
