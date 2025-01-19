@@ -1,15 +1,29 @@
 .navbar {
-    background-color: #191f22;
+    background-color: transparent;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
+    position: fixed;  /* Make the navbar stick to the top */
+    top: 0;  /* Position it at the top */
+    width: 80%;  /* Make it span the full width */
+    z-index: 1000;  /* Ensure it appears above other content */
 }
 
 .navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    height: 40px;  /* Adjust the height as needed */
+    margin-right: 10px;  /* Space between the logo and the text */
+}
+
+.navbar-brand h1 {
     color: #eeeeee;
     font-size: 24px;
-    text-decoration: none;
+    margin: 0;
 }
 
 .navbar-links {

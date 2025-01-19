@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/NavBar.css';  // Create a corresponding CSS file for styling
+import logo from './nyxhublogo.png';  // Update the path to your logo image
 
 const NavBar = () => {
     return (
         <nav className="navbar">
-            <h1 className="navbar-brand">NyxHub</h1>
+            <div className="navbar-brand">
+                <img src={logo} alt="NyxHub Logo" className="navbar-logo" />
+                <h1>NyxHub</h1>
+            </div>
             <ul className="navbar-links">
                 <li><Link to="/about">About</Link></li>
                 <li><Link to="/how-to-use">How to Use</Link></li>

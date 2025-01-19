@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import "./styles/Home.css";
 import nyxhublogo from './nyxhublogo.png';
 import { Helmet } from "react-helmet";
-import NavBar from './NavBar';  // Import the NavBar component
+import NavBar from './NavBar';
+import Spiral from './Spiral';
+
 const Home = () => {
   useEffect(() => {
     document.title = "Home - NyxHub";
@@ -14,12 +16,12 @@ const Home = () => {
         <link rel="icon" href="./nyxhublogo.png" type="image/png" size="16x16"/>
         <title>NyxHub</title>
       </Helmet>
-      <img src={nyxhublogo} alt="NyxHub Logo" className="nyxhublogo" />
       
       <div className="home-container">
             <NavBar />  {/* NavBar component included here */}
             <h1>Welcome to NyxHub</h1>
             <p>Securely share your files with ease.</p>
+            <Spiral />  {/* Spiral component included here */}
       </div>
       
     </div>

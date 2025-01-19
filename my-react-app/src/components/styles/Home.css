@@ -1,8 +1,8 @@
 .home-container {
     text-align: center;
-    padding-top: 50px;
+    padding-top: 5%;
     color: #eeeeee;
-    background-color: #191f22;
+    background-color: transparent;
     font-family: Arial, sans-serif;
     min-height: 100vh;
     display: flex;
@@ -28,12 +28,15 @@ h1 {
     color: #FFFFFF;
     font-size: 36px;
     margin-bottom: 20px;
+    
+
 }
 
 .home-container p {
     font-size: 18px;
-    color: #AAAAAA;
+    color: white;
     margin-bottom: 30px;
+
 }
 
 .home-container button {
