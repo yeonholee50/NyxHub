@@ -5,6 +5,7 @@ import About from './components/About';
 import HowToUse from './components/HowToUse';
 import Signup from './components/Signup';
 import Login from './components/Login';
+import Profile from './components/Profile';
 
 const App = () => {
     return (
@@ -15,6 +16,7 @@ const App = () => {
                 <Route path="/how-to-use" element={<HowToUse />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+                <Route path ="/profile" element={<Profile />} />
             </Routes>
         </Router>
     );

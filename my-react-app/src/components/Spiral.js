@@ -61,7 +61,6 @@ const Spiral = () => {
                 p.size = 1 + Math.floor(Math.random() * (p.rad * 0.055));
                 parts[n] = p;
             }
-            console.log('Parts created:', parts); // Debugging: Log parts array
             c.onmousemove = msmv;
             c.onmousedown = () => msdn = true;  // Fixing the event handler
             c.onmouseup = () => msdn = false;  // Fixing the event handler
@@ -87,7 +86,7 @@ const Spiral = () => {
             while (n--) {
                 var p = parts[n];
                 if (!p) {
-                    console.error('Part is undefined at index', n); // Debugging: Log undefined part
+                    
                     continue;
                 }
                 var radi = Math.PI / 180 * p.deg;
