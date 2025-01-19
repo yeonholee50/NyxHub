@@ -114,6 +114,18 @@ class FileModel(BaseModel):
     sender_id: str
     recipient_id: str
 
+class ReceivedFileModel(BaseModel):
+    id: PyObjectId = Field(alias="_id")
+    filename: str
+    sender_id: str
+    recipient_id: str
+
+    class Config:
+        json_encoders = {ObjectId: str}
+
+class DownloadFileModel(BaseModel):
+    filename: str
+    content: bytes
 
 
 # Endpoints
@@ -178,7 +190,7 @@ async def send_file(
 
     return {"message": "File sent successfully!"}
 
-@app.get('/received_files')
+@app.get('/received_files', response_model=List[ReceivedFileModel])
 async def received_files(token: str = Header(None)):
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
@@ -186,7 +198,7 @@ async def received_files(token: str = Header(None)):
     files = await files_collection.find({"recipient_id": user_id}).to_list(length=100)
     return files
 
-@app.get('/download/{file_id}')
+@app.get('/download/{file_id}', response_model=DownloadFileModel)
 async def download_file(file_id: str):
     file = fs.get(ObjectId(file_id))
     return FileResponse(io.BytesIO(file.read()), filename=file.filename, media_type='application/octet-stream')
