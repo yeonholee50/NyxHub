@@ -14,6 +14,7 @@ import logging
 from fastapi.responses import FileResponse
 import gridfs
 import io
+from pymongo import MongoClient
 
 # Initialize Flask app
 app = FastAPI()
@@ -34,11 +35,15 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 ALGORITHM = os.environ.get("ALGORITHM")
 
 # MongoDB Connection using Motor (asynchronous)
-client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
-db = client.get_database("nyx")
+motor_client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
+db = motor_client.get_database("nyx")
 users_collection = db.get_collection("users")
 files_collection = db.get_collection("files")
-fs = gridfs.GridFS(db)
+
+# MongoDB Connection using PyMongo (synchronous) for GridFS
+client = MongoClient(MONGO_URI)
+sync_db = client["nyx"]
+fs = gridfs.GridFS(sync_db)
 
 # Helper Functions
 def hash_password(password: str) -> str:
