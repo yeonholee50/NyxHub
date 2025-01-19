@@ -9,7 +9,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    document.title = "Login - LeetCodeTwitter";
+    document.title = "Login - NyxHub";
   }, []);
   const handleLogin = async () => {
     try {

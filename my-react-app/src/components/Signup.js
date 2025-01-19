@@ -11,7 +11,7 @@ const Signup = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    document.title = "Signup - LeetCodeTwitter";
+    document.title = "Signup - NyxHub";
   }, []);
 
   const handleSignup = async () => {

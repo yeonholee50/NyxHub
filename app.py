@@ -11,45 +11,11 @@ import dotenv
 from fastapi.middleware.cors import CORSMiddleware
 import motor.motor_asyncio
 import logging
-from flask import Flask, request, jsonify, send_from_directory
-from flask_cors import CORS
-import os
-from werkzeug.utils import secure_filename
 from fastapi.responses import FileResponse
-import shutil
-import logging
+import gridfs
+import io
 
-app = Flask(__name__)
-CORS(app)
-
-UPLOAD_FOLDER = 'uploads/'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-users = {}
-files = {}
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    handlers=[
-        logging.FileHandler('system.log'),  # Log messages to a file
-        logging.StreamHandler()             # Log messages to the console
-    ]
-)
-
-# Load environment variables
-dotenv.load_dotenv()
-
-MONGO_URI = os.environ.get("MONGO_URI")
-SECRET_KEY = os.environ.get("SECRET_KEY")
-ALGORITHM = os.environ.get("ALGORITHM")
-
-
+# Initialize Flask app
 app = FastAPI()
 
 app.add_middleware(
@@ -60,11 +26,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Load environment variables
+dotenv.load_dotenv()
+
+MONGO_URI = os.environ.get("MONGO_URI")
+SECRET_KEY = os.environ.get("SECRET_KEY")
+ALGORITHM = os.environ.get("ALGORITHM")
+
 # MongoDB Connection using Motor (asynchronous)
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
 db = client.get_database("nyx")
 users_collection = db.get_collection("users")
 files_collection = db.get_collection("files")
+fs = gridfs.GridFS(db)
 
 # Helper Functions
 def hash_password(password: str) -> str:
@@ -121,13 +95,8 @@ class LoginModel(BaseModel):
     username: str
     password: str
 
-
-
-
-    
 class FileModel(BaseModel):
     filename: str
-    filepath: str
     sender_id: str
     recipient_id: str
 
@@ -154,7 +123,7 @@ async def login(credentials: LoginModel):
     logger.info(f"Generated token for user: {user['username']} with token: {token}")
     return {"message": "Login successful", "token": token}
 
-@app.get('/profile', response_model= UserOutModel)
+@app.get('/profile', response_model=UserOutModel)
 async def profile(token: str = Header(None)):
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
@@ -171,9 +140,6 @@ async def send_file(
     file: UploadFile = File(...)
 ):
     logger.info(f"Received token: {token}")
-    """
-    maybe type of token and generated token is different?
-    """
 
     payload = verify_jwt(token)
     sender_id = payload["user_id"]
@@ -182,15 +148,12 @@ async def send_file(
     if not recipient:
         raise HTTPException(status_code=400, detail="Recipient user not found")
 
-    filename = secure_filename(file.filename)
-    file_path = os.path.join(UPLOAD_FOLDER, filename)
-    
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    # Save file to GridFS
+    file_id = fs.put(file.file, filename=file.filename)
 
     file_data = {
-        "filename": filename,
-        "filepath": file_path,
+        "file_id": str(file_id),
+        "filename": file.filename,
         "sender_id": sender_id,
         "recipient_id": str(recipient["_id"])
     }
@@ -199,27 +162,17 @@ async def send_file(
     return {"message": "File sent successfully!"}
 
 @app.get('/received_files')
-def received_files(token: str = Header(None)):
-    try:
-        payload = verify_jwt(token)
-    except Exception as e:
-        return jsonify({"error": "Invalid token"}), 401
+async def received_files(token: str = Header(None)):
+    payload = verify_jwt(token)
     user_id = payload.get("user_id")
-    if not user_id or user_id not in users:
-        return jsonify({"error": "User not found"}), 404
 
-    user_files = users[user_id]["files"]
-    return jsonify(user_files), 200
+    files = await files_collection.find({"recipient_id": user_id}).to_list(length=None)
+    return files
 
-@app.get('/download/<filename>')
-def download_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+@app.get('/download/{file_id}')
+async def download_file(file_id: str):
+    file = fs.get(ObjectId(file_id))
+    return FileResponse(io.BytesIO(file.read()), filename=file.filename, media_type='application/octet-stream')
 
 if __name__ == '__main__':
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
     app.run(debug=True)
-
-@app.get("/")
-async def root():
-    return {"message": "Nyx API is running!"}
