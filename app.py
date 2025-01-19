@@ -160,6 +160,7 @@ async def profile(token: str = Header(None)):
     user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
+    logger.info(f"User received profile data: {user}")
     return user
 
 @app.post('/send_file')
