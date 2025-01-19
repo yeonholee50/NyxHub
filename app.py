@@ -27,6 +27,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[
+        logging.FileHandler('system.log'),  # Log messages to a file
+        logging.StreamHandler()             # Log messages to the console
+    ]
+)
 # Load environment variables
 dotenv.load_dotenv()
 
