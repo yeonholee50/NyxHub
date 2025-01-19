@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException, Header, Depends, File, UploadFile, Form
+from fastapi.responses import StreamingResponse
+from io import BytesIO
 from fastapi.logger import logger
 from pydantic import BaseModel, Field
 from bson import ObjectId
@@ -198,12 +200,12 @@ async def received_files(token: str = Header(None)):
     files = await files_collection.find({"recipient_id": user_id}).to_list(length=100)
     return files
 
-@app.get('/download/{file_id}', response_model=DownloadFileModel)
+@app.get('/download/{file_id}', response_model=StreamingResponse)
 async def download_file(file_id: str):
     file = fs.get(ObjectId(file_id))
     logger.info(f"Downloading file: {file.filename}")
-    response = FileResponse(io.BytesIO(file.read()), filename=file.filename, media_type='application/octet-stream')
-    logger.info(f"File downloaded: {file.filename}")
-    return response
+    return StreamingResponse(io.BytesIO(file.read()), media_type='application/octet-stream', headers={"Content-Disposition": f"attachment; filename={file.filename}"})
+    
+    
 if __name__ == '__main__':
     app.run(debug=True)
