@@ -31,10 +31,11 @@ const Profile = () => {
             token: token,
           },
         };
+        console.log("config received");
         const profileResponse = await axios.get(`${global_link}profile`, config);
-        console.log("profileResponse", profileResponse);
+        console.log("profileResponse");
         const filesResponse = await axios.get(`${global_link}received_files`, config);
-        console.log("filesResponse", filesResponse);
+        console.log("filesResponse");
 
         setUserData(profileResponse.data);
         setReceivedFiles(filesResponse.data);
