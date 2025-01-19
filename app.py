@@ -157,11 +157,9 @@ async def login(credentials: LoginModel):
 async def profile(token: str = Header(None)):
     payload = verify_jwt(token)
     user_id = payload.get("user_id")
-    logger.info(f"User ID: {user_id}")
     user = await users_collection.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
-    logger.info(f"Found user: {user}")
     return user
 
 @app.post('/send_file')
