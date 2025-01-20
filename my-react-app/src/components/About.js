@@ -20,7 +20,7 @@ const About = () => {
                         <li><strong>User Management:</strong> Administrators can control who has access to specific files or directories, enhancing security and organization.</li>
                         <li><strong>Audit Logs:</strong> NyxHub maintains logs of file access and changes, providing an audit trail for compliance and security purposes.</li>
                         <li><strong>Convenience:</strong> NyxHub allows for asynchronous sharing, enabling users to upload and access files at any time without needing physical transfer or both parties to be online simultaneously.</li>
-                        <li><strong>Integration:</strong> NyxHub can potentially integrate with other tools and services, providing a seamless workflow for users who need to share files as part of a larger process.</li>
+                        <li><strong>Flexible Integration:</strong> NyxHub can potentially integrate with other tools and services, providing a seamless workflow for users who need to share files as part of a larger process.</li>
                     </ul>
                 </div>
             </div>
