@@ -7,8 +7,12 @@ const NavBar = () => {
     return (
         <nav className="navbar">
             <div className="navbar-brand">
-                <img src={logo} alt="NyxHub Logo" className="navbar-logo" />
-                <h1>NyxHub</h1>
+                <Link to="/">
+                    <img src={logo} alt="NyxHub Logo" className="navbar-logo" />
+                </Link>
+                <Link to="/">
+                    <h1>NyxHub</h1>
+                </Link>
             </div>
             <ul className="navbar-links">
                 <li><Link to="/about">About</Link></li>
