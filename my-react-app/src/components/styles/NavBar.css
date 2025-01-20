@@ -13,11 +13,14 @@
 .navbar-brand {
     display: flex;
     align-items: center;
+    margin-right: 5%;
+    margin-left: 5%;
 }
 
 .navbar-logo {
     height: 40px;  /* Adjust the height as needed */
     margin-right: 10px;  /* Space between the logo and the text */
+    background-color: #eeeeee;
 }
 
 .navbar-brand h1 {
@@ -30,10 +33,14 @@
     list-style: none;
     display: flex;
     gap: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
+
 }
 
 .navbar-links li {
     display: inline;
+    margin-left: 0%;
 }
 
 .navbar-links a {
