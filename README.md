@@ -1,6 +1,6 @@
 # 🌌 NyxHub
 
-NyxHub is a centralized file-sharing application designed to provide secure, fast, and decentralized file transfers. With the name taken as an inspiration from Greek mythology, NyxHub operates seamlessly, ensuring that your data flows effortlessly across a global network.
+NyxHub is a centralized file-sharing application designed to provide secure, fast, and file transfers. With the name taken as an inspiration from Greek mythology, NyxHub operates seamlessly, ensuring that your data flows effortlessly across a global network.
 
 ## ✨ Features
 ✅ means already supported
